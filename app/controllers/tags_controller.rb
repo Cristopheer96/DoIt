@@ -61,7 +61,7 @@ class TagsController < ApplicationController
     params.require(:tag).permit(:title, :color)
   end
 
-  def set_tag
+  def set_task
       @tag = Tag.find(params[:id])
-    end
+  end
 end

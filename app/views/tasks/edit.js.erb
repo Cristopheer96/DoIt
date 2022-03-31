@@ -1,0 +1,8 @@
+
+// Render the new form
+<%# const const= getElement('.modal-body-task').html('xd'); %>
+$('.modal-body-task').html('<%= j render("form") %>');
+
+
+// Show the dynamic dialog
+$('#modaltask').modal("show");
