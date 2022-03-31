@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col">
+    <h3>Mis etiquetas</h3>
+  </div>
+
+  <div class="col">
+    <%= link_to  new_tag_path ,{remote: true, class: "btn btn-add-tag", id: "anadir-categoria-btn"} do %>
+       Crear Tarea <i class="fa-solid fa-plus"></i>
+      <% end %>
+  </div>
+
+</div>
+
+<div class="container list-tags">
+  <ul id="tags-lists">
+  <%@tags.each do |tag|%>
+  <li id="tag-<%=tag.id%>">
+    <div class="row">
+     <div class="col-1">
+      <a >
+        <i class="fa-solid fa-tag"></i>
+      </a>
+     </div>
+     <div class="col-7">
+      <span> <%= tag.title%> </span>
+     </div>
+     <div class="col-3">
+      <%= link_to edit_tag_path(tag), html_options = {class: "btn  btn-xs", remote: true} do %>
+                  <i class="fa-solid fa-pen-to-square"></i>
+                <% end %>
+      <%= link_to tag, remote: true, method: :delete, data: { confirm: "¿Borrar categoria: #{tag.title}?"}, class: "btn btn-xs"  do %>
+                  <i class="fa-solid fa-trash-can"></i>
+                <% end %>
+     </div>
+     <div class="col-1">
+     </div>
+    </div>
+  </li>
+  <% end %>
+
+  </ul>
+</div>

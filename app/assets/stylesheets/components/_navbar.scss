@@ -17,6 +17,20 @@
 i{
   color: white;
 }
-.dropdown{
+.dropdown-toggle{
   cursor: pointer;
+}
+.btn-add-task{
+  background: #db4c3f;
+}
+.rigth{
+  a{
+      color:antiquewhite;
+  }
+}
+.btn-add-task:hover{
+  background: #f1b7b2;
+}
+#dropdown-menu{
+  background-color:#db4c3f
 }

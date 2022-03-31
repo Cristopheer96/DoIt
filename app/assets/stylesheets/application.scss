@@ -7,7 +7,11 @@
 @import "bootstrap/scss/bootstrap";
 @import "font-awesome";
 
+/*
+ *= require font-awesome
+ */
 // Your CSS partials
+@import "./tags/index";
 @import "components/index";
 @import "pages/index";
 .offcanvas-body{
@@ -22,4 +26,7 @@
       color: black;
     }
   }
+}
+.btn-add-tag{
+  background: #f1b7b2 !important;
 }

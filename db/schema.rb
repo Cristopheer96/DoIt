@@ -18,8 +18,10 @@ ActiveRecord::Schema.define(version: 2022_03_30_024328) do
   create_table "tags", force: :cascade do |t|
     t.string "title"
     t.string "color"
+    t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_tags_on_user_id"
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -28,10 +30,12 @@ ActiveRecord::Schema.define(version: 2022_03_30_024328) do
     t.boolean "state", default: false
     t.datetime "start_date"
     t.datetime "end_date"
+    t.bigint "tag_id"
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "importance"
+    t.index ["tag_id"], name: "index_tasks_on_tag_id"
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
@@ -48,5 +52,7 @@ ActiveRecord::Schema.define(version: 2022_03_30_024328) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "tags", "users"
+  add_foreign_key "tasks", "tags"
   add_foreign_key "tasks", "users"
 end
