@@ -20,6 +20,7 @@ gem 'jbuilder', '~> 2.7'
 # Use Redis adapter to run Action Cable in production
 gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
+gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use Active Storage variant
@@ -27,7 +28,7 @@ gem 'redis', '~> 4.0'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
-
+gem 'jquery-rails'
 gem 'devise'
 
 gem 'autoprefixer-rails', '10.2.5'

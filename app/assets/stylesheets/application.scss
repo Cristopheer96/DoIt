@@ -10,3 +10,16 @@
 // Your CSS partials
 @import "components/index";
 @import "pages/index";
+.offcanvas-body{
+  a{
+    text-decoration: none;
+    color: black
+  }
+  button{
+    border: 0px;
+    background:transparent;
+    i{
+      color: black;
+    }
+  }
+}

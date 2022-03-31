@@ -1,1 +1,7 @@
-<h1>mis tareasmis tareasmis tareasmis tareasmis tareasmis tareasmis tareasmis tareasmis tareas</h1>
+
+<div class="container">
+  <% @tasks.each do |task|%>
+    <h2> <%= task.id%> </h2>
+    <h3><%= task.title%> </h3>
+  <% end%>
+</div>
