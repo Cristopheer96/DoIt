@@ -50,23 +50,23 @@
      <div class="col-3">
       <span> <%= task.title%> </span>
      </div>
-     <div class="col-3 col de etiquetas" style="font-size:12px">
+     <div class="col-3 col de etiquetas" style="font-size:10px; ">
        <div class="row">
-        <div class="col-3">
+        <div class="col-3" style="background-color:<%=task.labelleds.first.tag.present? ? task.labelleds.first.tag.color : "gray"%>; height:16px">
           <%if task.labelleds.first.tag_id.present?%>
             <%=task.labelleds.first.tag.title.present? ? task.labelleds.first.tag.title : "-"%>
           <% else %>
             -
           <% end %>
         </div>
-        <div class="col-3">
+        <div class="col-3" style="background-color:<%=task.labelleds.second.tag.present? ? task.labelleds.second.tag.color : "gray"%>; height:16px">
           <%if task.labelleds.second.tag_id.present?%>
             <%=task.labelleds.second.tag.title%>
           <% else %>
             -
           <% end %>
         </div>
-        <div class="col-3">
+        <div class="col-3" style="background-color:<%=task.labelleds.third.tag.present? ? task.labelleds.third.tag.color : "gray"%>; height:16px">
           <%if task.labelleds.third.tag_id.present?%>
             <%=task.labelleds.third.tag.title%>
           <% else %>

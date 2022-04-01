@@ -13,7 +13,7 @@
     <div class="item form-group<%= @tag.errors[:color].any? ? ' has-error has-feedback' : '' %>">
       <%= f.label :color, "color de la Etiqueta: " %>
       <div class="input-group">
-        <%= f.text_area :color, {class: "form-control", :placeholder=>"Introduzca la descripción de la categoría..."} %>
+        <%= f.select :color, {rojo: "red", :azul=>"blue", verde: "green", amarillo: "yellow"} %>
         <%if @tag.errors[:color].any? %>
           <p class="bg-danger"><%= @tag.errors[:color].to_s[/\w([^"]*)/] %></p>
         <% end %>
