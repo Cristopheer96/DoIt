@@ -1,0 +1,57 @@
+<%= form_for @labelled1, remote: true do |f| %>
+
+    <div class="item form-group<%= @labelled1.errors[:tag].any? ? ' has-error has-feedback' : '' %>">
+      <%= f.label :labelled1, "Etiqueta #1: " %>
+      <div class="input-group">
+        <%= collection_select(:labelled1, :tag_id, @tags, :id, :title, {:prompt => 'Seleccione categoria'}, { class: "form-control" })%>
+          <%if @labelled1.errors[:tag].any? %>
+            <p class="bg-danger"><%= @labelled1.errors[:tag].to_s[/\w([^"]*)/] %></p>
+          <% end %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="actions col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+        <%= f.submit @labelled1.new_record? ? "Crear Tarea" : "Asignar", :class => "btn btn-success"%>
+      </div>
+    </div>
+<% end %>
+<% @labelled1 = @labelled2 %>
+<%= form_for @labelled1, remote: true do |f| %>
+
+    <div class="item form-group<%= @labelled1.errors[:tag].any? ? ' has-error has-feedback' : '' %>">
+      <%= f.label :labelled1, "Etiqueta #2: " %>
+      <div class="input-group">
+        <%= collection_select(:labelled1, :tag_id, @tags, :id, :title, {:prompt => 'Seleccione categoria'}, { class: "form-control" })%>
+          <%if @labelled1.errors[:tag].any? %>
+            <p class="bg-danger"><%= @labelled1.errors[:tag].to_s[/\w([^"]*)/] %></p>
+          <% end %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="actions col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+        <%= f.submit @labelled1.new_record? ? "Crear Tarea" : "Asignar", :class => "btn btn-success"%>
+      </div>
+    </div>
+<% end %>
+<% @labelled1=@labelled3 %>
+
+<%= form_for @labelled1, remote: true do |f| %>
+
+    <div class="item form-group<%= @labelled1.errors[:tag].any? ? ' has-error has-feedback' : '' %>">
+      <%= f.label :labelled1, "Etiqueta #1: " %>
+      <div class="input-group">
+        <%= collection_select(:labelled1, :tag_id, @tags, :id, :title, {:prompt => 'Seleccione categoria'}, { class: "form-control" })%>
+          <%if @labelled1.errors[:tag].any? %>
+            <p class="bg-danger"><%= @labelled1.errors[:tag].to_s[/\w([^"]*)/] %></p>
+          <% end %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="actions col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+        <%= f.submit @labelled1.new_record? ? "Crear Tarea" : "Asignar", :class => "btn btn-success"%>
+      </div>
+    </div>
+<% end %>

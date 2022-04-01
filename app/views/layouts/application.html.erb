@@ -26,7 +26,7 @@
       </div>
       <div class="offcanvas-body d-block">
         <div>
-        <a href="<%= tasks_path %>"> Mis tareas <button> <i class="fa-solid fa-list-check"></i> </button> </a>
+        <a href="<%= tasks_path %>" > Mis tareas <button> <i class="fa-solid fa-list-check"></i> </button> </a>
         </div>
         <a href="<%= tags_path %>"> Mis Etiquetas <button><i class="fa-solid fa-tag"></i></i></button> </a>
 
@@ -46,6 +46,7 @@
      <%= yield %>
      <%= render "tasks/modal_task"%>
      <%= render "tags/modal_tag"%>
+     <%= render "labelleds/modal_labelled"%>
 
     </div>
 

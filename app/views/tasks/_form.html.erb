@@ -1,29 +1,26 @@
 <%= form_for @task, remote: true do |f| %>
 
     <div class="item form-group<%= @task.errors[:title].any? ? ' has-error has-feedback' : '' %>">
-      <%= f.label :title, "Nombre de Tarea: " %>
       <div class="input-group">
-        <%= f.text_field :title, {:class=> "form-control", :placeholder=>"Introduzca el nombre de la categoría..."} %>
+        <%= f.text_field :title, {:class=> "form-control", :placeholder=>"Introduzca el nombre de la tarea..."} %>
         <%if @task.errors[:title].any? %>
           <p class="bg-danger"><%= @task.errors[:title].to_s[/\w([^"]*)/] %></p>
         <% end %>
       </div>
     </div>
 
-    <div class="item form-group<%= @task.errors[:description].any? ? ' has-error has-feedback' : '' %>">
-      <%= f.label :description, "Descripción de la categoría: " %>
+    <div class="item mt-3 form-group<%= @task.errors[:description].any? ? ' has-error has-feedback' : '' %>">
       <div class="input-group">
-        <%= f.text_area :description, {class: "form-control", :placeholder=>"Introduzca la descripción de la categoría..."} %>
+        <%= f.text_area :description, {class: "form-control", :placeholder=>"Introduzca una descripción de la tarea..."} %>
         <%if @task.errors[:description].any? %>
           <p class="bg-danger"><%= @task.errors[:description].to_s[/\w([^"]*)/] %></p>
         <% end %>
       </div>
     </div>
 
-    <div class="item form-group<%= @task.errors[:importance].any? ? ' has-error has-feedback' : '' %>">
-      <%= f.label :importance, "Nombre de importancia: " %>
+    <div class="item mt-3 mb-3 form-group<%= @task.errors[:importance].any? ? ' has-error has-feedback' : '' %>">
       <div class="input-group">
-        <%= f.number_field :importance, {:class=> "form-control", :placeholder=>"Introduzca el nombre de la categoría..."} %>
+        <%= f.number_field :importance, {:class=> "form-control", :placeholder=>"Establece un Importancia del 1 al 5 "} %>
         <%if @task.errors[:importance].any? %>
           <p class="bg-danger"><%= @task.errors[:importance].to_s[/\w([^"]*)/] %></p>
         <% end %>
@@ -55,9 +52,10 @@
 
       </div>
     </div>
+    <div class="row">
+      <div class="actions col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+        <%= f.submit @task.new_record? ? "Crear Tarea" : "Tarea", :class => "btn btn-success"%>
+      </div>
 
-
-    <div class="actions col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-      <%= f.submit @task.new_record? ? "Crear Categoría" : "Actualizar Categoría", :class => "btn btn-success"%>
     </div>
 <% end %>

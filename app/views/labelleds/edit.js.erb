@@ -1,0 +1,10 @@
+$('#modallabelled').modal("show");
+console.log("<%=params['task_id'] %>")
+<%@task = Task.find(params['task_id'])%>
+<%# se puere recorrer con each/map   @task.map {|task| render form} %>
+<% @labelled1=@task.labelleds.first%>
+<% @labelled2=@task.labelleds.second%>
+<% @labelled3=@task.labelleds.third%>
+<%# me repito y no cumplo DRY, luego de realizar las funcionalides factorizar codigo %>
+
+$('.modal-body-labelled').html('<%= j render("form_labelled")%>');

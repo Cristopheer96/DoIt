@@ -21,8 +21,13 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_params)
     @task.user = current_user
+
+
     respond_to do |format|
       if @task.save
+        Labelled.create(task_id: @task.id)
+        Labelled.create(task_id: @task.id)
+        Labelled.create(task_id: @task.id)
         format.js
       else
         format.json { render json: @task.errors.full_messages, status: :unprocessable_entity }
