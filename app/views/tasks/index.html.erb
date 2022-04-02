@@ -1,3 +1,59 @@
+<div class="row d-flex w-100 mt-4 mb-4">
+  <%= form_tag tasks_path, method: :get,class:"d-flex" do %>
+    <div class="row">
+      <div class="col-2">
+        <%= label_tag(:task_name, "Tarea:") %>
+        <%= text_field_tag :task_name,
+          params[:task_name],
+          class: "form-control",
+          placeholder: "Hacer..."
+        %>
+      </div>
+
+      <div class="col-2">
+        <%= label_tag(:tag_id, "Etiquetas:") %>
+        <%= select_tag(:tag, options_from_collection_for_select(Tag.all, :id, :title), class: "form-control",placeholder: "Etiquetas")%>
+      </div>
+
+
+
+      <div class="col-2">
+        <%= label_tag(:state, "Estado:") %>
+        <%= select_tag(:state, options_for_select([ 'No Especificado','Pendiente','Terminado' ]), class: "form-control",placeholder: "Estado")%>
+      </div>
+
+
+      <div class="col-2">
+        <%= label_tag(:importt, "Importancia:") %>
+        <%= select_tag(:importt, options_for_select([ 'uno','dos','tres' ]), class: "form-control",placeholder: "Estado")%>
+      </div>
+
+
+
+      <div class="col-2">
+        <%= label_tag(:start_date, "Fecha ini:") %>
+        <%= date_field_tag :start_date,
+          params[:start_date],
+          class: "form-control",
+          placeholder: "12/23/2082"
+        %>
+      </div>
+
+      <div class="col-2">
+        <%= label_tag(:end_date, "Fecha fin:") %>
+        <%= date_field_tag :end_date,
+          params[:end_date],
+          class: "form-control",
+          placeholder: "12/23/2082"
+        %>
+      </div>
+
+    </div>
+
+
+    <%= submit_tag "Search", class: "btn btn-primary" %>
+  <% end %>
+</div>
 
 <div class="row container">
   <div class="col">
@@ -50,7 +106,7 @@
      <div class="col-3">
       <span> <%= task.title%> </span>
      </div>
-     <div class="col-3 col de etiquetas" style="font-size:10px; ">
+     <div class="col-3 col-de-etiquetas" style="font-size:10px; font-weigth:700;">
        <div class="row">
         <div class="col-3" style="background-color:<%=task.labelleds.first.tag.present? ? task.labelleds.first.tag.color : "gray"%>; height:16px">
           <%if task.labelleds.first.tag_id.present?%>

@@ -6,7 +6,35 @@ class TasksController < ApplicationController
 
 
   def index
-    @tasks = Task.where(user_id: current_user.id)
+    if (params[:task_name] || params[:tag_id] || params[:importt] || params[:start_date] || params[:end_date] )
+
+      @task_task_name = Task.where("title ILIKE ?", "%#{params[:task_name]}%")
+
+      case params[:importt]
+      when 'tres' then @task_importance = Task.where(importance: 3)
+
+
+      end
+      # @task_importance = Task.where(importance: params[:importt]) if  params[:import] =! "No Especificado"
+
+      @task_start_date = Task.where(start_date: params[:start_date] ) if params[:start_date] =! ""
+
+      @task_end_date = Task.where(start_date: params[:end_date]) if params[:end_date] =! ""
+
+      unless @task_task_name.nil?
+        @tasks = @task_task_name
+        unless @task_importance.nil?
+          @tasks= @task_importance
+        end
+      end
+      @tasks = @task_importance
+      # raise
+      @tasks = Task.where(user_id: current_user.id) if @tasks.nil?
+      @tasks.uniq
+    else
+      @tasks = Task.where(user_id: current_user.id)
+    end
+
   end
   def show
   end
@@ -57,6 +85,10 @@ class TasksController < ApplicationController
       format.json { head :no_content }
       format.js
     end
+  end
+
+  def search
+
   end
 
   private
