@@ -10,29 +10,24 @@ class TasksController < ApplicationController
 
     if (params["/tasks"]  )
 
-      params["/tasks"]["start_date"]
-      @task_user = current_user.tasks
-      @tasks = @task_user.where(importance: 10) #<ActiveRecord::Relation []> Para que arroje este tipo de dato  no funciona  ActiveRecord::Relation
-      @task_task_name = @task_user.where("title ILIKE ?", "%#{params[:task_name]}%")
-      case params[:importt]
-      when 'tres' then @task_importance = @task_task_name.where(importance: 3)
-      when 'dos' then @task_importance = @task_task_name.where(importance: 2)
-      when 'uno' then @task_importance = @task_task_name.where(importance: 1)
-      when 'cuatro' then @task_importance = @task_task_name.where(importance: 4)
-      when 'cinco' then  @task_importance = @task_task_name.where(importance: 5)
-      else
-        @task_importance = @task_task_name
-      end
+      # @tasks = Labelled.joins(:task).where(tag_id: params["/tasks"]["tag_id"] )
+      @tasks = current_user.tasks
+      # @task_user = current_user.tasks
+      @task_task_name = @tasks.where("title ILIKE ?", "%#{params["/tasks"]["task_name"]}%")
+
+
+      @task_importance = @task_task_name.where(importance: params["/tasks"]["importanced"])
+      @task_importance = @task_task_name if @task_importance.size == 0
 
       @task_start_date = @task_importance.where(start_date: "#{params["/tasks"]["start_date"]} 00:00:00.000000000 +0000")
-      # @task_start_date = @task_importance if params["/tasks"]["start_date"] = ""
+      @task_start_date = @task_importance if @task_start_date.size == 0
 
       @task_end_date = @task_start_date.where(end_date: "#{params["/tasks"]["end_date"] } 00:00:00.000000000 +0000")
-      # @task_end_date = @task_start_date if params["/tasks"]["end_date"] = ""
-      raise
+      @task_end_date = @task_start_date if @task_end_date.size == 0
       @tasks = @task_end_date
-      @tasks = @task_user.where(user_id: current_user.id) if @tasks.nil?
-      @tasks.uniq
+      @tasks = @tasks.joins(:labelleds).where( 'labelleds.tag_id' => params["/tasks"]["tag_id"])
+      @tasks = @task_end_date if @tasks.size == 0
+
     else
       @tasks = Task.where(user_id: current_user.id)
     end
