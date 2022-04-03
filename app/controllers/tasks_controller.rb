@@ -11,25 +11,18 @@ class TasksController < ApplicationController
     if (params["/tasks"]  )
 
       # @tasks = Labelled.joins(:task).where(tag_id: params["/tasks"]["tag_id"] )
-      @tasks = current_user.tasks
-      # @task_user = current_user.tasks
-      @task_task_name = @tasks.where("title ILIKE ?", "%#{params["/tasks"]["task_name"]}%")
-
-
-      @task_importance = @task_task_name.where(importance: params["/tasks"]["importanced"])
-      @task_importance = @task_task_name if @task_importance.size == 0
-
-      @task_start_date = @task_importance.where(start_date: "#{params["/tasks"]["start_date"]} 00:00:00.000000000 +0000")
-      @task_start_date = @task_importance if @task_start_date.size == 0
-
-      @task_end_date = @task_start_date.where(end_date: "#{params["/tasks"]["end_date"] } 00:00:00.000000000 +0000")
-      @task_end_date = @task_start_date if @task_end_date.size == 0
-      @tasks = @task_end_date
-      @tasks = @tasks.joins(:labelleds).where( 'labelleds.tag_id' => params["/tasks"]["tag_id"])
-      @tasks = @task_end_date if @tasks.size == 0
-
+      @task_name = params["/tasks"]["task_name"]
+      @importace = params["/tasks"]["importance"]
+      @start_date = params["/tasks"]["start_date"]
+      @end_date = params["/tasks"]["end_date"]
+      @tag_id = params["/tasks"]["tag_id"]
+      @tasks_all = search_tasks(current_user,@task_name,@tag_id,@importace,@start_date,@end_date )
+      @tasks = @tasks_all.where(state: false)
+      @tasks_completed = Task.where(state: true)
     else
-      @tasks = Task.where(user_id: current_user.id)
+      @tasks_completed = Task.where(user_id: current_user.id).order(:start_date).where(state: true)
+
+      @tasks = Task.where(user_id: current_user.id).order(:start_date).where(state: false)
     end
 
   end
@@ -60,11 +53,13 @@ class TasksController < ApplicationController
       end
     end
   end
+
   def edit
     respond_to do |format|
       format.js
     end
   end
+
   def update
     respond_to do |format|
       if @task.update(task_params)
@@ -76,6 +71,7 @@ class TasksController < ApplicationController
       end
     end
   end
+
   def destroy
     @task.destroy
     respond_to do |format|
@@ -84,8 +80,15 @@ class TasksController < ApplicationController
     end
   end
 
-  def search
-
+  def complete
+    #.toggle!(:active)
+    @task = Task.find(params[:task_id])
+    if @task.state
+      @task.state = false
+    else
+      @task.state = true
+    end
+    @task.save
   end
 
   private
@@ -98,27 +101,23 @@ class TasksController < ApplicationController
       @task = Task.find(params[:id])
   end
 
-  def search_tasks(usuario,task_name,tag_id,importt,start_date,end_date )
-      # @task_user = usuario.tasks
-      # @tasks = @task_user.where(importance: 10) #<ActiveRecord::Relation []> Para que arroje este tipo de dato  no funciona  ActiveRecord::Relation
-      # @task_task_name = @task_user.where("title ILIKE ?", "%#{task_name]}%")
-      # case params[:importt]
-      # when 'tres' then @task_importance = @task_user.where(importance: 3)
-      # when 'dos' then @task_importance = @task_user.where(importance: 2)
-      # when 'uno' then @task_importance = @task_user.where(importance: 1)
-      # when 'cuatro' then @task_importance = @task_user.where(importance: 4)
-      # when 'cinco' then  @task_importance = @task_user.where(importance: 5)
-      # else
-      #   @task_importance = @task_user.where(importance: 10)
-      # end
-      # @task_start_date = @task_user.where(start_date: params[:start_date])
-      # @task_start_date = @task_user.where(importance: 10) if @task_start_date.nil?
-      # @task_end_date = @task_user.where(start_date: params[:end_date])
-      # @task_end_date = @task_user.where(importance: 10) if @task_end_date.nil?
+  def search_tasks(usuario,task_name,tag_id,importace,start_date,end_date ) # metodo solicitado
+    @tasks = usuario.tasks
+          # @task_user = current_user.tasks
+    @task_task_name = @tasks.where("title ILIKE ?", "%#{task_name}%")
 
-      # @tasks = @task_task_name + @task_importance + @task_start_date + @task_end_date
-      # @tasks = @task_user.where(user_id: current_user.id) if @tasks.nil?
-      # @tasks.uniq
+    @task_importance = @task_task_name.where(importance: importace)
+    @task_importance = @task_task_name if @task_importance.size == 0
+
+    @task_start_date = @task_importance.where(start_date: "#{start_date} 00:00:00.000000000 +0000")
+    @task_start_date = @task_importance if @task_start_date.size == 0
+
+    @task_end_date = @task_start_date.where(end_date: "#{end_date} 00:00:00.000000000 +0000")
+    @task_end_date = @task_start_date if @task_end_date.size == 0
+    @tasks = @task_end_date
+    @tasks = @tasks.joins(:labelleds).where( 'labelleds.tag_id' => tag_id)
+    @tasks = @task_end_date if @tasks.size == 0
+    return @tasks.order(:start_date)
   end
 
 end
