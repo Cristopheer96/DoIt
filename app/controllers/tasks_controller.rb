@@ -8,28 +8,25 @@ class TasksController < ApplicationController
   def index
     if (params[:task_name] || params[:tag_id] || params[:importt] || params[:start_date] || params[:end_date] )
 
-      @task_task_name = Task.where("title ILIKE ?", "%#{params[:task_name]}%")
-
+      @task_user = current_user.tasks
+      @tasks = @task_user.where(importance: 10) #<ActiveRecord::Relation []> Para que arroje este tipo de dato  no funciona  ActiveRecord::Relation
+      @task_task_name = @task_user.where("title ILIKE ?", "%#{params[:task_name]}%")
       case params[:importt]
-      when 'tres' then @task_importance = Task.where(importance: 3)
-
-
+      when 'tres' then @task_importance = @task_user.where(importance: 3)
+      when 'dos' then @task_importance = @task_user.where(importance: 2)
+      when 'uno' then @task_importance = @task_user.where(importance: 1)
+      when 'cuatro' then @task_importance = @task_user.where(importance: 4)
+      when 'cinco' then  @task_importance = @task_user.where(importance: 5)
+      else
+        @task_importance = @task_user.where(importance: 10)
       end
-      # @task_importance = Task.where(importance: params[:importt]) if  params[:import] =! "No Especificado"
+      @task_start_date = @task_user.where(start_date: params[:start_date])
+      @task_start_date = @task_user.where(importance: 10) if @task_start_date.nil?
+      @task_end_date = @task_user.where(start_date: params[:end_date])
+      @task_end_date = @task_user.where(importance: 10) if @task_end_date.nil?
 
-      @task_start_date = Task.where(start_date: params[:start_date] ) if params[:start_date] =! ""
-
-      @task_end_date = Task.where(start_date: params[:end_date]) if params[:end_date] =! ""
-
-      unless @task_task_name.nil?
-        @tasks = @task_task_name
-        unless @task_importance.nil?
-          @tasks= @task_importance
-        end
-      end
-      @tasks = @task_importance
-      # raise
-      @tasks = Task.where(user_id: current_user.id) if @tasks.nil?
+      @tasks = @task_task_name + @task_importance + @task_start_date + @task_end_date
+      @tasks = @task_user.where(user_id: current_user.id) if @tasks.nil?
       @tasks.uniq
     else
       @tasks = Task.where(user_id: current_user.id)
@@ -100,4 +97,10 @@ class TasksController < ApplicationController
   def set_task
       @task = Task.find(params[:id])
   end
+
+  def search_tasks(userio,task_name,tag_id,importt,start_date )
+        if (params[:task_name] || params[:tag_id] || params[:importt] || params[:start_date] || params[:end_date] )
+
+  end
+
 end
