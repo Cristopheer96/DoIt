@@ -1,5 +1,5 @@
 <div class="row d-flex w-100 mt-4 mb-4">
-  <%= form_tag tasks_path, method: :get,class:"d-flex" do %>
+  <% form_tag tasks_path, method: :get,class:"d-flex" do %>
     <div class="row">
       <div class="col-2">
         <%= label_tag(:task_name, "Tarea:") %>
@@ -15,13 +15,10 @@
         <%= select_tag(:tag, options_from_collection_for_select(Tag.all, :id, :title), class: "form-control",placeholder: "Etiquetas")%>
       </div>
 
-
-
       <div class="col-2">
         <%= label_tag(:state, "Estado:") %>
         <%= select_tag(:state, options_for_select([ 'No Especificado','Pendiente','Terminado' ]), class: "form-control",placeholder: "Estado")%>
       </div>
-
 
       <div class="col-2">
         <%= label_tag(:importt, "Importancia:") %>
@@ -32,11 +29,7 @@
 
       <div class="col-2">
         <%= label_tag(:start_date, "Fecha ini:") %>
-        <%= date_field_tag :start_date,
-          params[:start_date],
-          class: "form-control",
-          placeholder: "12/23/2082"
-        %>
+        <%= date_field_tag(:start_date, Date.today)%>
       </div>
 
       <div class="col-2">
@@ -49,10 +42,21 @@
       </div>
 
     </div>
-
-
     <%= submit_tag "Search", class: "btn btn-primary" %>
   <% end %>
+ <% @STATUS = [1,2,3,4,5]%>
+  <%= form_for tasks_path, method: :get,class:"d-flex" do |f| %>
+  First name: <%= f.text_field :task_name %><br />
+  Importancia<%= f.select :importance, @STATUS %>
+
+  Start Date : <%= f.date_field :start_date %><br />
+  End Date : <%= f.date_field :end_date %><br />
+
+  <%# Biography : <%= f.select_field :biography %><br /> %>
+  Admin?    : <%= f.check_box :admin %><br />
+  <%= f.submit %>
+<% end %>
+
 </div>
 
 <div class="row container">
