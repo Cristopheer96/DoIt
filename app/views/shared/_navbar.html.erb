@@ -9,7 +9,7 @@
       <% end %>
       <% if current_user.present? %>
 
-      <button>hola  <%=current_user.email.first(5)%> </button>
+      <span>User mail:   <%=current_user.email%> </span>
       <% end %>
     </div>
     <div class="rigth">
