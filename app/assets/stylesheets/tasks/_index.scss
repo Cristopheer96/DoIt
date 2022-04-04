@@ -13,8 +13,22 @@
   font-weight:700;
   text-align: center;
 }
+
+.task-iterated{
+
+  i{
+    font-size: 12px;
+  }
+  span{
+    text-align: center;
+    font-size:12px;
+  }
+}
 .list-tasks{
   .text-date{
     font-size: 12px;
   }
+}
+#task-id{
+  font-size:12px;
 }

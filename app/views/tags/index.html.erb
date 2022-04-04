@@ -28,7 +28,7 @@
       <%= link_to edit_tag_path(tag), html_options = {class: "btn  btn-xs", remote: true} do %>
                   <i class="fa-solid fa-pen-to-square"></i>
                 <% end %>
-      <%= link_to tag, remote: true, method: :delete, data: { confirm: "¿Borrar categoria: #{tag.title}?"}, class: "btn btn-xs"  do %>
+      <%= link_to tag, remote: true, method: :delete, data: { confirm: "¿Estas seguro de borrar la Etiqueta:: #{tag.title}?"}, class: "btn btn-xs"  do %>
                   <i class="fa-solid fa-trash-can"></i>
                 <% end %>
      </div>

@@ -18,7 +18,10 @@ class TasksController < ApplicationController
       @tag_id = params["/tasks"]["tag_id"]
       @tasks_all = search_tasks(current_user,@task_name,@tag_id,@importace,@start_date,@end_date )
       @tasks = @tasks_all.where(state: false)
-      @tasks_completed = Task.where(state: true)
+      @tasks_completed = @tasks_all.where(state: true)
+    elsif (params[:tag_id])
+      @tasks = Task.where(user_id: current_user.id).order(:start_date).where(state: false).joins(:labelleds).where( 'labelleds.tag_id' => params[:tag_id])
+      @tasks_completed = Task.where(user_id: current_user.id).order(:start_date).where(state: true).joins(:labelleds).where( 'labelleds.tag_id' => params[:tag_id])
     else
       @tasks_completed = Task.where(user_id: current_user.id).order(:start_date).where(state: true)
 
@@ -26,6 +29,12 @@ class TasksController < ApplicationController
     end
 
   end
+
+  def calendar
+    index
+
+  end
+
   def show
   end
 
@@ -89,6 +98,10 @@ class TasksController < ApplicationController
       @task.state = true
     end
     @task.save
+    respond_to do |format|
+      format.json { head :no_content }
+      format.js
+    end
   end
 
   private
