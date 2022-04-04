@@ -29,9 +29,14 @@
       </div>
       <div class="offcanvas-body d-block">
         <div>
-        <a href="<%= tasks_path %>" > Mis tareas <button> <i class="fa-solid fa-list-check"></i> </button> </a>
+          <a href="<%= tasks_path %>" > Mis tareas <button> <i class="fa-solid fa-list-check"></i> </button> </a>
         </div>
-        <a href="<%= tags_path %>"> Mis Etiquetas <button><i class="fa-solid fa-tag"></i></i></button> </a>
+        <div>
+          <a href="<%= tags_path %>"> Mis Etiquetas <button><i class="fa-solid fa-tag"></i></i></button> </a>
+        </div>
+        <div>
+          <a href="<%= tasks_calendar_path %>"> Calendario <button><i class="fa-solid fa-tag"></i></i></button> </a>
+        </div>
 
       </div>
     </div>
@@ -45,7 +50,7 @@
         <p>Try scrolling the rest of the page to see this option in action.</p>
       </div>
     </div>
-    <div style="margin-left: 300px">
+    <div style="margin-left: 250px">
      <%= yield %>
      <%= render "tasks/modal_task"%>
      <%= render "tags/modal_tag"%>

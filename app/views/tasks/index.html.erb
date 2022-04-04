@@ -1,4 +1,4 @@
-<div class="row d-flex w-100 mt-4 mb-4">
+<div class="row d-flex w-75 search-bar mt-4 mb-4">
   <% form_tag tasks_path, method: :get,class:"d-flex" do %>
     <div class="row">
       <div class="col-2">
@@ -44,24 +44,40 @@
     </div>
     <%= submit_tag "Search", class: "btn btn-primary" %>
   <% end %>
- <% @STATUS = [1,2,3,4,5]%>
+  <% @STATUS = ["No Especficiado",1,2,3,4,5]%>
   <%= form_for tasks_path, method: :get,class:"d-flex" do |f| %>
-  First name: <%= f.text_field :task_name %><br />
-  Importancia<%= f.select :importance, @STATUS %>
-
-  Start Date : <%= f.date_field :start_date %><br />
-  End Date : <%= f.date_field :end_date %><br />
-
-  <%# Biography : <%= f.select_field :biography %><br /> %>
-  Admin?    : <%= f.check_box :admin %><br />
-  <%= f.submit %>
+  <div class="row">
+    <div class=col-2>
+      <%= f.label :task_name, "Tarea" %>
+      <%= f.text_field :task_name %>
+    </div>
+    <div class="col-2">
+      <%= f.label :importance, "Importancia" %>
+      <%= f.select :importance, @STATUS %>
+    </div>
+    <div class="col-2">
+      <%= f.label :tag_id, "Etiquetas disponibles" %>
+      <%= f.collection_select :tag_id, Tag.where(user_id: current_user.id),:id,:title, include_blank: true %>
+    </div>
+    <div class="col-2">
+      <%= f.label :start_date, "Fecha inicio" %>
+      <%= f.date_field :start_date %>
+    </div>
+    <div class="col-2">
+      <%= f.label :end_date, "Fecha fim" %>
+      <%= f.date_field :end_date %><br />
+    </div>
+    <div class="col-2">
+      <%= f.submit %>
+    </div>
+  </div>
 <% end %>
 
 </div>
 
 <div class="row container">
   <div class="col">
-    <h3>Mis Tareas</h3>
+    <h3>Mis Tareas Pendientes</h3>
   </div>
 
   <div class="col">
@@ -73,21 +89,31 @@
 </div>
 
 <div class="container list-tasks">
-  <ul id="tasks-lists">
-    <li id="tag-id">
+  <ul id="tasks-lists" class="tasks-list-ToDo">
+    <li id="task-id">
       <div class="row">
-      <div class="col-2">
+      <div class="col-1">
         <a >
-          inicio
+          Inicio
         </a>
       </div>
-      <div class="col-2">
+      <div class="col-1">
         <a >
-          fin
+          Fin
+        </a>
+      </div>
+      <div class="col-1">
+        <a >
+          Terminar
+        </a>
+      </div>
+      <div class="col-1">
+        <a >
+          Importancia
         </a>
       </div>
       <div class="col-3">
-        <span> titulo</span>
+        <span> Titulo</span>
       </div>
       <div class="col-3">
         Etiquetas
@@ -99,18 +125,133 @@
       </div>
     </li>
   <%@tasks.each do |task|%>
-  <li id="task-<%=task.id%>">
+  <li id="task-<%=task.id%>" class="task-iterated">
     <div class="row">
-     <div class="col-2">
+     <div class="col-1 text-date ">
       <span> <%=task.start_date.to_s.to_date%> </span>
      </div>
-     <div class="col-2">
+     <div class="col-1 text-date">
       <span> <%=task.end_date.to_s.to_date %> </span>
      </div>
+     <div class="col-1 mark-complete d-flex justify-content-center">
+      <%= link_to  task_complete_path(task_id: task.id),remote: true,method: :put, data: { confirm: "¿Estas seguro de Completar la Tarea:a: #{task.title}?"} do %>
+                  <i class="fa-solid fa-check" data-complete-task="<%=task.id%>"></i>
+                <% end %>
+     </div>
+     <div class="col-1 importance d-flex justify-content-center">
+      <span> <%=task.importance%> </span>
+    </div>
      <div class="col-3">
       <span> <%= task.title%> </span>
      </div>
      <div class="col-3 col-de-etiquetas" style="font-size:10px; font-weigth:700;">
+       <div class="row">
+        <div class="col-3" style="background-color:<%=task.labelleds.first.tag.present? ? task.labelleds.first.tag.color : "gray"%>; height:16px">
+          <%# Refactorizar1 %>
+          <%if task.labelleds.first.tag_id.present? && task.labelleds.first.tag.title.present? %>
+            <%= link_to "#{task.labelleds.first.tag.title} ",tasks_path(tag_id: task.labelleds.first.tag.id ) %>
+          <% else %>
+            -
+          <% end %>
+        </div>
+        <div class="col-3" style="background-color:<%=task.labelleds.second.tag.present? ? task.labelleds.second.tag.color : "gray"%>; height:16px">
+          <%if task.labelleds.second.tag_id.present?%>
+            <%= link_to "#{task.labelleds.second.tag.title} ",tasks_path(tag_id: task.labelleds.first.tag.id ) %>
+          <% else %>
+            -
+          <% end %>
+        </div>
+        <div class="col-3" style="background-color:<%=task.labelleds.third.tag.present? ? task.labelleds.third.tag.color : "gray"%>; height:16px">
+          <%if task.labelleds.third.tag_id.present?%>
+            <%= link_to "#{task.labelleds.third.tag.title} ",tasks_path(tag_id: task.labelleds.first.tag.id ) %>
+          <% else %>
+            -
+          <% end %>
+        </div>
+        <div class="col-3">
+          <% label = task.labelleds.third%>
+            <%= link_to  edit_labelleds_path(task_id: task.id), html_options = {class: "btn  btn-xs", remote: true, style: "color: black"} do %>
+                  <i class="fa-solid fa-tags" data-task="<%=task.id%>" ></i>
+                <% end %>
+        </div>
+       </div>
+     </div>
+     <div class="col-2">
+      <%= link_to edit_task_path(task), html_options = {class: "btn  btn-xs", remote: true, style: "color: black"} do %>
+                  <i class="fa-solid fa-pen-to-square"></i>
+                <% end %>
+      <%= link_to task, remote: true, method: :delete, data: { confirm: "¿Estas segurode borrar la Tarea: #{task.title}?"}, class: "btn btn-xs"  do %>
+                  <i class="fa-solid fa-trash-can"></i>
+                <% end %>
+     </div>
+
+    </div>
+  </li>
+  <% end %>
+
+  </ul>
+</div>
+
+<div class="row container">
+  <h3>Mis Tareas Terminadas</h3>
+</div>
+<div class="container list-tasks">
+  <ul id="tasks-lists" class="tasks-lists-complete">
+    <li id="task-id">
+      <div class="row">
+      <div class="col-1">
+        <a >
+          Inicio
+        </a>
+      </div>
+      <div class="col-1">
+        <a >
+          Fin
+        </a>
+      </div>
+      <div class="col-1">
+        <a >
+          Terminar
+        </a>
+      </div>
+      <div class="col-1">
+        <a >
+          Importancia
+        </a>
+      </div>
+      <div class="col-3">
+        <span> Titulo</span>
+      </div>
+      <div class="col-3 d-flex justify-content-center">
+        Etiquetas
+      </div>
+      <div class="col-2">
+
+        <span>Editar/Eliminar</span>
+      </div>
+      </div>
+    </li>
+  <%@tasks_completed.each do |task|%>
+  <li id="task-<%=task.id%>" class="task-iterated">
+    <div class="row">
+     <div class="col-1 text-date">
+      <span> <%=task.start_date.to_s.to_date%> </span>
+     </div>
+     <div class="col-1 text-date">
+      <span> <%=task.end_date.to_s.to_date %> </span>
+     </div>
+     <div class="col-1 mark-complete d-flex justify-content-center">
+      <%= link_to  task_complete_path(task_id: task.id),remote: true,method: :put, data: { confirm: "¿Estas seguro de marcar como Pendinete la Tarea: #{task.title}?"} do %>
+                  <i class="fa-solid fa-check" data-complete-task="<%=task.id%>"></i>
+                <% end %>
+     </div>
+     <div class="col-1 importance d-flex justify-content-center">
+      <span> <%=task.importance%> </span>
+    </div>
+     <div class="col-3">
+      <span> <%= task.title%> </span>
+     </div>
+     <div class="col-3 col-de-etiquetas   " style="font-size:10px; font-weigth:700;">
        <div class="row">
         <div class="col-3" style="background-color:<%=task.labelleds.first.tag.present? ? task.labelleds.first.tag.color : "gray"%>; height:16px">
           <%if task.labelleds.first.tag_id.present?%>
@@ -145,7 +286,7 @@
       <%= link_to edit_task_path(task), html_options = {class: "btn  btn-xs", remote: true, style: "color: black"} do %>
                   <i class="fa-solid fa-pen-to-square"></i>
                 <% end %>
-      <%= link_to task, remote: true, method: :delete, data: { confirm: "¿Borrar categoria: #{task.title}?"}, class: "btn btn-xs"  do %>
+      <%= link_to task, remote: true, method: :delete, data: { confirm: "¿Estas seguro de borrar la Tarea:a: #{task.title}?"}, class: "btn btn-xs"  do %>
                   <i class="fa-solid fa-trash-can"></i>
                 <% end %>
      </div>
