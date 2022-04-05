@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :labelled do
     tag
-    user
+    task
   end
 end
