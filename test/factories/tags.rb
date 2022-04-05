@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :tag do
-    title { Faker::Verb.simple_present }
+    title { Faker::Verb.unique.simple_present }
     color {Faker::Color.color_name}
     user
   end

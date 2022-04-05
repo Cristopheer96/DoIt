@@ -9,7 +9,6 @@ class TasksController < ApplicationController
 
 
     if (params["/tasks"]  )
-
       # @tasks = Labelled.joins(:task).where(tag_id: params["/tasks"]["tag_id"] )
       @task_name = params["/tasks"]["task_name"]
       @importace = params["/tasks"]["importance"]
